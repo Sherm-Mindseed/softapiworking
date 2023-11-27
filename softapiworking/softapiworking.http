@@ -1,0 +1,6 @@
+@softapiworking_HostAddress = http://localhost:5078
+
+GET {{softapiworking_HostAddress}}/api/Employees/GetEmployees
+Accept: application/json
+
+###
