@@ -7,6 +7,7 @@ using softapiworking.mydb;
 
 namespace softapiworking.Controllers
 {
+    //api controler for Employees
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
