@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore;
 using softapiworking.DTO;
 using softapiworking.mydb;
+using System.Net;
 
 namespace softapiworking.Controllers
 {
@@ -33,5 +34,58 @@ namespace softapiworking.Controllers
                 return NotFound();
             }else { return List; }
         }
-     }  
+
+        [HttpGet("GetEmployeeById")]
+        public async Task<ActionResult<EmployeeDTO>> GetEmployeeById(int Id)
+        {
+            EmployeeDTO employee = await Task.Run(() => _dbContext.Employees.Where(w => w.Idemployee == Id)?.Select(
+                s => new EmployeeDTO
+                {
+                    Id = s.Idemployee,
+                    Name = s.Name,
+                    Surname = s.Surname,
+                    Hired = s.Hired,
+                    skills = s.SkillsIdskills
+                })
+                .FirstOrDefault());
+            if (employee==null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return employee;
+            }
+        }
+
+        [HttpPost("InsertEmployee")]
+        public async Task<HttpStatusCode> InsertUser(EmployeeDTO employee)
+        {
+            var entity = new Employee()
+            {
+                Name = employee.Name,
+                Surname = employee.Surname,
+                Hired = employee.Hired,
+                SkillsIdskills = employee.skills
+            };
+
+            _dbContext.Employees.Add(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return HttpStatusCode.Created;
+        }
+        [HttpPut("UpdateEmployee")]
+        public async Task<HttpStatusCode> UpdateEmployee(EmployeeDTO employee)
+        {
+            var entity = await _dbContext.Employees.Where(x=>x.Idemployee==employee.Id).FirstOrDefaultAsync();
+            entity.Name= employee.Name;
+            entity.Surname= employee.Surname;
+            entity.Hired= employee.Hired;
+            entity.SkillsIdskills= employee.skills;
+            await _dbContext.SaveChangesAsync();
+            return HttpStatusCode.OK;
+        }
+    }
+
+   
 }
