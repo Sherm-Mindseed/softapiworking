@@ -24,7 +24,7 @@ namespace softapiworking.Controllers
             {
                 Idjobs=x.Idjobs,
                 Jobname = x.Jobname,
-                SkillsIdskills = (ICollection<SkillDTO>)x.SkillsIdskills
+          
             }).ToListAsync();
             if (List.Count <= 0 || List == null)
             {
@@ -41,7 +41,8 @@ namespace softapiworking.Controllers
                 {
                     Id = s.Idjobs,
                     Name = s.Jobname,
-                    skills = s.SkillsIdskills
+                    skills = s.Skills,
+                   
                 })
                 .FirstOrDefault());
             if (employee == null)
@@ -60,7 +61,7 @@ namespace softapiworking.Controllers
             var entity = new Job()
             {
                 Jobname=job.Jobname,
-                SkillsIdskills= (ICollection<Skill>)job.SkillsIdskills.ToList()
+                
             };
 
             _dbContext.Jobs.Add(entity);
@@ -73,7 +74,7 @@ namespace softapiworking.Controllers
         {
             var entity = await _dbContext.Jobs.Where(s => s.Idjobs == job.Idjobs).FirstOrDefaultAsync();
             entity.Jobname=job.Jobname;
-            entity.SkillsIdskills = (ICollection<Skill>)job.SkillsIdskills;
+           
             await _dbContext.SaveChangesAsync();
             return HttpStatusCode.OK;
         }

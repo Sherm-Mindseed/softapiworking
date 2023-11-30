@@ -9,5 +9,5 @@ public partial class Job
 
     public string? Jobname { get; set; }
 
-    public virtual ICollection<Skill> SkillsIdskills { get; set; } = new List<Skill>();
+    public string? Skills { get; set; }
 }

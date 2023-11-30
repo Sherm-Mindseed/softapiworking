@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore;
 using softapiworking.DTO;
@@ -28,7 +29,7 @@ namespace softapiworking.Controllers
                 Name= x.Name,
                 Surname= x.Surname,
                 Hired= x.Hired,
-                skills = x.SkillsIdskills
+                
             }).ToListAsync();
             if (List.Count <= 0 || List==null) {
                 return NotFound();
@@ -45,7 +46,7 @@ namespace softapiworking.Controllers
                     Name = s.Name,
                     Surname = s.Surname,
                     Hired = s.Hired,
-                    skills = s.SkillsIdskills
+                    skills=s.Skils
                 })
                 .FirstOrDefault());
             if (employee==null)
@@ -59,14 +60,14 @@ namespace softapiworking.Controllers
         }
 
         [HttpPost("InsertEmployee")]
-        public async Task<HttpStatusCode> InsertUser(EmployeeDTO employee)
+        public async Task<HttpStatusCode> InsertUser([FromBody]EmployeeDTO employee)
         {
             var entity = new Employee()
             {
                 Name = employee.Name,
                 Surname = employee.Surname,
                 Hired = employee.Hired,
-                SkillsIdskills = employee.skills
+                Skils=employee.skills
             };
 
             _dbContext.Employees.Add(entity);
@@ -75,17 +76,32 @@ namespace softapiworking.Controllers
             return HttpStatusCode.Created;
         }
         [HttpPut("UpdateEmployee")]
-        public async Task<HttpStatusCode> UpdateEmployee(EmployeeDTO employee)
+        public async Task<HttpStatusCode> UpdateEmployee([FromBody]EmployeeDTO employee)
         {
             var entity = await _dbContext.Employees.Where(x=>x.Idemployee==employee.Id).FirstOrDefaultAsync();
             entity.Name= employee.Name;
             entity.Surname= employee.Surname;
             entity.Hired= employee.Hired;
-            entity.SkillsIdskills= employee.skills;
+            entity.Skils=employee.skills;
+            
             await _dbContext.SaveChangesAsync();
             return HttpStatusCode.OK;
         }
+
+        [HttpDelete("DeleteEmployee/{Id}")]
+        public async Task<HttpStatusCode> DeleteUser(int Id)
+        {
+            var entity = new Employee()
+            {
+                Idemployee = Id
+            };
+            _dbContext.Employees.Attach(entity);
+            _dbContext.Employees.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+            return HttpStatusCode.OK;
+        }
+
     }
 
-   
+
 }

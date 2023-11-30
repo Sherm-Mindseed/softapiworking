@@ -9,6 +9,6 @@ namespace softapiworking.DTO
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime Hired { get; set; }
-        public ICollection<Skill> skills { get; set; } 
+        public string? skills { get; set; } 
     }
 }

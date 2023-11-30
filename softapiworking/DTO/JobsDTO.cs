@@ -8,6 +8,6 @@ namespace softapiworking.DTO
 
         public string? Jobname { get; set; }
 
-        public virtual ICollection<SkillDTO> SkillsIdskills { get; set; } = new List<SkillDTO>();
+        public virtual string SkillsIdskills { get; set; }
     }
 }

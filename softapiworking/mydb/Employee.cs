@@ -9,9 +9,9 @@ public partial class Employee
 
     public string Name { get; set; } = null!;
 
-    public string Surname { get; set; } = null!;
+    public string? Surname { get; set; }
 
     public DateTime Hired { get; set; }
 
-    public virtual ICollection<Skill> SkillsIdskills { get; set; } = new List<Skill>();
+    public string? Skils { get; set; }
 }
